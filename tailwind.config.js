@@ -1,11 +1,11 @@
 export default {
     content: [
         './index.html',
-        './src/**/*.{vue,js,ts,jsx,tsx}'
+        './src/**/*.{vue,ts}'
     ],
     theme: {
         transitionDuration: {
             '200': '200ms'
         }
     }
-}
+};

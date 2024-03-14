@@ -744,10 +744,6 @@
         "prefer-template": [
             "error"
         ],
-        "quote-props": [
-            "error",
-            "consistent-as-needed"
-        ],
         "quotes": [
             "error",
             "single",

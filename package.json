@@ -6,7 +6,7 @@
     "scripts": {
         "build": "run-p type-check \"build-only {@}\" --",
         "dev": "vite",
-        "lint": "eslint . --ext .vue,.js,.ts --ignore-path .gitignore",
+        "lint": "eslint . --ext .vue,.ts --ignore-path .gitignore",
         "test:unit": "vitest",
         "type-check": "vue-tsc --build --force"
     },
