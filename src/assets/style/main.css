@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+#app,
+main {
+    width: 100%;
+    height: 100%;
+}
+
+html {
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: 0.2s;
+}
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+.fade-enter-to,
+.fade-leave-from {
+    opacity: 1;
+}
+
+.fadeSlide-enter-active,
+.fadeSlide-leave-active {
+    transition: transform 0.15s, opacity 0.15s;
+}
+.fadeSlide-enter-from {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+.fadeSlide-leave-to {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.modalOverlayFade-enter-active,
+.modalOverlayFade-leave-active {
+    transition-duration: 0.2s;
+}
+.modalOverlayFade-leave-active {
+    transition-delay: 0.2s;
+}
+.modalOverlayFade-enter-from,
+.modalOverlayFade-leave-to {
+    opacity: 0;
+}
+.modalOverlayFade-enter-to,
+.modalOverlayFade-leave-from {
+    opacity: 1;
+}
+
+.modalPopup-enter-active,
+.modalPopup-leave-active {
+    animation-duration: 0.3s;
+    animation-fill-mode: both;
+    animation-name: modalPopup;
+}
+
+.modalPopup-leave-active {
+    animation-direction: reverse;
+}
+
+@keyframes modalPopup {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.98);
+    }
+    40% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@layer utilities {
+    .animate-loader-circular-rotate {
+        animation: animation-loader-circular-rotate 1s linear infinite;
+    }
+    .loader-circular-shape {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+        stroke-linecap: round;
+        animation: animation-loader-circular-turn 1.4s ease-in-out infinite;
+    }
+    @keyframes animation-loader-circular-rotate {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+    @keyframes animation-loader-circular-turn {
+        0% {
+            stroke-dasharray: 1, 200;
+            stroke-dashoffset: 0;
+        }
+    
+        50% {
+            stroke-dasharray: 89, 200;
+            stroke-dashoffset: -35;
+        }
+    
+        100% {
+            stroke-dasharray: 89, 200;
+            stroke-dashoffset: -124;
+        }
+    }
+
+    .animate-loader-dot {
+        animation-name: animation-loader-dot;
+        animation-duration: 1.5s;
+        animation-iteration-count: infinite;
+        animation-fill-mode: both;
+    }
+    .animate-loader-dot:nth-of-type(2) {
+        animation-delay: .2s;
+    }
+    .animate-loader-dot:nth-of-type(3) {
+        animation-delay: .4s;
+    }
+    @keyframes animation-loader-dot {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+
+    .scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    .scrollbar::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+    }
+    .scrollbar::-webkit-scrollbar-thumb {
+        background: #64748b;
+    }
+    .scrollbar::-webkit-scrollbar-thumb:hover,
+    .scrollbar::-webkit-scrollbar-thumb:active {    
+        background: #4c586a;
+    }
+    .scrollbar::-webkit-scrollbar-track,
+    .scrollbar::-webkit-scrollbar-track:hover,
+    .scrollbar::-webkit-scrollbar-track:active {
+        background: #0a0f1c;
+    }
+}

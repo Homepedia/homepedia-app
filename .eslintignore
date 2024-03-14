@@ -1,0 +1,16 @@
+node_modules
+
+.DS_Store
+.fleet
+.idea
+.vscode
+
+.output
+.data
+dist
+
+private
+.env
+.env.*
+
+**/*.config.js
