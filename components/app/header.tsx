@@ -10,7 +10,7 @@ function NavLink({ to, auth, children }: { to: string, auth?: boolean, children:
     return auth ? (
         <Link href={to} className={`transition duration-200 rounded-full px-4 py-2 font-medium ${router.route === to ? 'bg-primary text-white' : 'hover:text-primary-dark text-gray'}`}>{children}</Link>
     ) : (
-        <Link href={to} className={`hover:text-primary-dark text-gray transition duration-200 rounded-full px-4 py-2 font-medium ${router.route === to && 'bg-gray-light'}`}>{children}</Link>
+        <Link href={to} className={`hover:text-primary-dark transition duration-200 rounded-full px-4 py-2 font-medium ${router.route === to ? 'bg-gray-light text-primary-dark' : 'text-gray'}`}>{children}</Link>
     );
 }
 
@@ -26,7 +26,7 @@ export default function Header() {
             </div>
             <nav className="flex items-center gap-5 justify-between w-full">
                 <div className="flex items-center gap-2">
-                    <NavLink to="/dashboard">Dashboard</NavLink>
+                    <NavLink to="/">Dashboard</NavLink>
                     <NavLink to="/map">Map</NavLink>
                 </div>
                 <div className="flex items-center gap-2">
