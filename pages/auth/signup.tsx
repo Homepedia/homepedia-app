@@ -14,16 +14,28 @@ import {
 } from '@/components/ui/form';
 
 const formSchema = z.object({
+    email: z.string().trim().min(1, 'Email address is required').email('Email address is invalid'),
     username: z.string().trim().min(1, 'Username is required'),
-    password: z.string().trim().min(1, 'Password is required')
+    password: z.string().trim().min(1, 'Password is required'),
+    confirmPassword: z.string().trim().min(1, 'Password confirmation is required')
+}).superRefine(({ confirmPassword, password }, ctx) => {
+    if (confirmPassword !== password) {
+        ctx.addIssue({
+            code: 'custom',
+            message: 'Passwords does not match',
+            path: ['confirmPassword']
+        });
+    }
 });
 
-export default function Login() {
+export default function Register() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
+            email: '',
             username: '',
-            password: ''
+            password: '',
+            confirmPassword: ''
         },
         mode: 'all'
     });
@@ -33,9 +45,20 @@ export default function Login() {
     }
 
     return (
-        <AuthLayout title="Log in">
+        <AuthLayout title="Sign up">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex flex-col items-stretch">
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) =>
+                            <FormItem>
+                                <FormLabel>Email address</FormLabel>
+                                <FormControl><FormInput {...field} /></FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        }
+                    />
                     <FormField
                         control={form.control}
                         name="username"
@@ -58,7 +81,18 @@ export default function Login() {
                             </FormItem>
                         }
                     />
-                    <Button type="submit">Log in</Button>
+                    <FormField
+                        control={form.control}
+                        name="confirmPassword"
+                        render={({ field }) =>
+                            <FormItem>
+                                <FormLabel>Password confirmation</FormLabel>
+                                <FormControl><FormInput type="password" {...field} /></FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        }
+                    />
+                    <Button type="submit">Sign up</Button>
                 </form>
             </Form>
         </AuthLayout>

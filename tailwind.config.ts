@@ -9,13 +9,15 @@ const config = {
         colors: {
             white: '#FFF',
             gray: {
-                DEFAULT: '#A9AEB3',
-                light: '#EEF3F9'
+                DEFAULT: '#cfcfcf',
+                dark: '#b7b7b7',
+                light: '#e9e9e9'
             },
             primary: {
                 DEFAULT: '#6057FE',
                 dark: '#112858'
             },
+            error: '#e32323',
             input: 'hsl(var(--input))',
             ring: 'hsl(var(--ring))',
             background: 'hsl(var(--background))',
@@ -49,18 +51,19 @@ const config = {
             '200': '200ms'
         },
         keyframes: {
-            'accordion-down': {
-                from: { height: '0' },
-                to: { height: 'var(--radix-accordion-content-height)' }
-            },
-            'accordion-up': {
-                from: { height: 'var(--radix-accordion-content-height)' },
-                to: { height: '0' }
+            'fadeSlide': {
+                from: {
+                    opacity: '0',
+                    transform: 'translateY(-10px)'
+                },
+                to: {
+                    opacity: '1',
+                    transform: 'translateY(10px)'
+                }
             }
         },
         animation: {
-            'accordion-down': 'accordion-down 0.2s ease-out',
-            'accordion-up': 'accordion-up 0.2s ease-out'
+            'fadeSlide': 'fadeSlide 0.2s both'
         },
         zIndex: {
             'map-tooltip': '999'
