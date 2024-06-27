@@ -15,7 +15,6 @@ export default function Map() {
         content: '',
         layer: L.geoJson()
     });
-
     const [mapInstance, setMapInstance] = useState<L.Map | null>(null);
 
     const defaultStyle = {
@@ -58,50 +57,51 @@ export default function Map() {
     };
 
     useEffect(() => {
-        if (!mapInstance) {
-            setMapInstance(L.map(mapId, {
-                center: L.latLng(46.74, 2.92),
-                zoom: 6.4
-            }));
-            return;
+        setMapInstance(L.map(mapId, {
+            center: L.latLng(46.74, 2.92),
+            zoom: 6.4
+        }));
+    }, []);
+
+    useEffect(() => {
+        if (mapInstance) {
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                minZoom: 6
+            }).addTo(mapInstance as L.Map);
+
+            const mapWithRegions: L.GeoJSON = L.geoJson(franceRegions as geojson.GeoJsonObject, {
+                style: defaultStyle,
+                onEachFeature: (feature, layer) => {
+                    layer.on({
+                        mouseover: (e) => {
+                            const ll = e.target;
+                            ll.setStyle(activeStyle);
+                        },
+                        mouseout: (e) => {
+                            mapWithRegions?.resetStyle(e.target);
+                        },
+                        click: (e) => {
+                            mapInstance?.flyToBounds(e.target.getBounds(), { duration: 0.4 });
+                            const { nom: name, code } = feature.properties;
+
+                            const departmentLayer = L.geoJson(getFranceDepartments(code), {
+                                style: {
+                                    weight: 2,
+                                    color: 'red',
+                                    opacity: 0.8,
+                                    fillOpacity: 0.4
+                                }
+                            });
+
+                            replaceCurrentLayer(name, code, departmentLayer);
+                        }
+                    });
+                }
+            });
+
+            mapWithRegions.addTo(mapInstance as L.Map);
         }
-
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-            minZoom: 6
-        }).addTo(mapInstance as L.Map);
-
-        const mapWithRegions: L.GeoJSON = L.geoJson(franceRegions as geojson.GeoJsonObject, {
-            style: defaultStyle,
-            onEachFeature: (feature, layer) => {
-                layer.on({
-                    mouseover: (e) => {
-                        const ll = e.target;
-                        ll.setStyle(activeStyle);
-                    },
-                    mouseout: (e) => {
-                        mapWithRegions?.resetStyle(e.target);
-                    },
-                    click: (e) => {
-                        mapInstance?.flyToBounds(e.target.getBounds(), { duration: 0.4 });
-                        const { nom: name, code } = feature.properties;
-
-                        const departmentLayer = L.geoJson(getFranceDepartments(code), {
-                            style: {
-                                weight: 2,
-                                color: 'red',
-                                opacity: 0.8,
-                                fillOpacity: 0.4
-                            }
-                        });
-
-                        replaceCurrentLayer(name, code, departmentLayer);
-                    }
-                });
-            }
-        });
-
-        mapWithRegions.addTo(mapInstance as L.Map);
     }, [mapInstance]);
 
     return (
