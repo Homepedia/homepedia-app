@@ -13,9 +13,9 @@ export const useAuthRepository = (setPendingValue: Dispatch<SetStateAction<boole
                 method: 'POST'
             });
         },
-        async register(lastName: string, firstName: string, email: string, password: string) {
+        async register(email: string, username: string, password: string, confirmPassword: string) {
             await repository.request('/register', {
-                body: { last_name: lastName, name: firstName, email, password },
+                body: { email, username, password, confirmPassword },
                 method: 'POST'
             });
         },

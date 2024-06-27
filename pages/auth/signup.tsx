@@ -12,6 +12,10 @@ import {
     FormLabel,
     FormMessage
 } from '@/components/ui/form';
+import { useAuthRepository } from '@/hooks/repositories/useAuthRepository';
+import { useState } from 'react';
+import { RequestError } from '@/classes/RequestError';
+import { Loader } from '@/components/ui/loader';
 
 const formSchema = z.object({
     email: z.string().trim().min(1, 'Email address is required').email('Email address is invalid'),
@@ -29,6 +33,9 @@ const formSchema = z.object({
 });
 
 export default function Register() {
+    const [pendingRegister, setPendingRegister] = useState(false);
+    const authRepository = useAuthRepository(setPendingRegister);
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -40,8 +47,17 @@ export default function Register() {
         mode: 'all'
     });
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log({ submit: values });
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        if (pendingRegister) return;
+
+        const { email, username, password, confirmPassword } = values;
+        try {
+            await authRepository.register(email, username, password, confirmPassword);
+        } catch (e) {
+            if (e instanceof RequestError) {
+                console.log({ error: e.stack });
+            }
+        }
     }
 
     return (
@@ -92,7 +108,7 @@ export default function Register() {
                             </FormItem>
                         }
                     />
-                    <Button type="submit">Sign up</Button>
+                    <Button type="submit">Sign up {pendingRegister && <Loader size='23' />}</Button>
                 </form>
             </Form>
         </AuthLayout>
