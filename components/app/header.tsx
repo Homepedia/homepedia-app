@@ -1,4 +1,5 @@
 import logo from '@/assets/logo.svg';
+import { RouteEnum } from '@/enums/RouteEnum';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -21,16 +22,17 @@ export default function Header() {
                     src={logo}
                     alt="Logo"
                     width={200}
+                    priority
                 />
             </div>
             <nav className="flex items-center gap-5 justify-between w-full">
                 <div className="flex items-center gap-2">
-                    <NavLink to="/">Dashboard</NavLink>
-                    <NavLink to="/map">Map</NavLink>
+                    <NavLink to={RouteEnum.DASHBOARD}>Dashboard</NavLink>
+                    <NavLink to={RouteEnum.MAP}>Map</NavLink>
                 </div>
                 <div className="flex items-center gap-2">
-                    <NavLink auth to="/auth/login">Log in</NavLink>
-                    <NavLink auth to="/auth/signup">Sign up</NavLink>
+                    <NavLink auth to={RouteEnum.LOGIN}>Log in</NavLink>
+                    <NavLink auth to={RouteEnum.SIGN_UP}>Sign up</NavLink>
                 </div>
             </nav>
         </header>

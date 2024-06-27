@@ -87,11 +87,12 @@ const FormItem = React.forwardRef<
 });
 FormItem.displayName = 'FormItem';
 
-const FormInput = React.forwardRef<HTMLInputElement, InputProps>(({ className, ...props }) => {
+const FormInput = React.forwardRef<HTMLInputElement, InputProps>(({ className, ...props }, ref) => {
     const { error } = useFormField();
 
     return (
         <Input
+            ref={ref}
             className={cn(error && 'border-error focus-visible:border-error', className)}
             {...props}
         />

@@ -12,6 +12,9 @@ import {
     FormLabel,
     FormMessage
 } from '@/components/ui/form';
+import { useAuthRepository } from '@/hooks/repositories/useAuthRepository';
+import { useState } from 'react';
+import { RequestError } from '@/classes/RequestError';
 
 const formSchema = z.object({
     username: z.string().trim().min(1, 'Username is required'),
@@ -19,6 +22,9 @@ const formSchema = z.object({
 });
 
 export default function Login() {
+    const [loadingLogin, setLoadingLogin] = useState(false);
+    const authRepository = useAuthRepository(setLoadingLogin);
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -28,8 +34,16 @@ export default function Login() {
         mode: 'all'
     });
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log({ submit: values });
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        const { username, password } = values;
+        try {
+            const user = await authRepository.login(username, password);
+            console.log({ user });
+        } catch (e) {
+            if (e instanceof RequestError) {
+                console.log({ error: e.stack });
+            }
+        }
     }
 
     return (
@@ -58,7 +72,7 @@ export default function Login() {
                             </FormItem>
                         }
                     />
-                    <Button type="submit">Log in</Button>
+                    <Button type="submit">{loadingLogin && 'chargement...' } Log in</Button>
                 </form>
             </Form>
         </AuthLayout>
