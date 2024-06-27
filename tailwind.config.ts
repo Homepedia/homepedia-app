@@ -63,7 +63,8 @@ const config = {
             }
         },
         animation: {
-            'fadeSlide': 'fadeSlide 0.2s both'
+            'fadeSlide': 'fadeSlide 0.2s both',
+            'spin': 'spin 1s linear infinite'
         },
         zIndex: {
             'map-tooltip': '999'

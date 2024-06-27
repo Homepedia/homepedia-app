@@ -15,6 +15,7 @@ import {
 import { useAuthRepository } from '@/hooks/repositories/useAuthRepository';
 import { useState } from 'react';
 import { RequestError } from '@/classes/RequestError';
+import { Loader } from '@/components/ui/loader';
 
 const formSchema = z.object({
     username: z.string().trim().min(1, 'Username is required'),
@@ -22,8 +23,8 @@ const formSchema = z.object({
 });
 
 export default function Login() {
-    const [loadingLogin, setLoadingLogin] = useState(false);
-    const authRepository = useAuthRepository(setLoadingLogin);
+    const [pendingLogin, setPendingLogin] = useState(false);
+    const authRepository = useAuthRepository(setPendingLogin);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -35,6 +36,8 @@ export default function Login() {
     });
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
+        if (pendingLogin) return;
+
         const { username, password } = values;
         try {
             const user = await authRepository.login(username, password);
@@ -72,7 +75,7 @@ export default function Login() {
                             </FormItem>
                         }
                     />
-                    <Button type="submit">{loadingLogin && 'chargement...' } Log in</Button>
+                    <Button type="submit">Log in {pendingLogin && <Loader size='23' />}</Button>
                 </form>
             </Form>
         </AuthLayout>

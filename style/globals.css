@@ -30,10 +30,44 @@
         --input: 214.3 31.8% 91.4%;
         --ring: 222.2 84% 4.9%;
     }
-}
 
-@layer base {
     html {
         font-family: 'Inter', Arial, sans-serif;
+    }
+}
+
+@layer utilities {
+    .animate-loader-circular-rotate {
+        animation: animation-loader-circular-rotate 1s linear infinite;
+    }
+
+    .loader-circular-shape {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+        stroke-linecap: round;
+        animation: animation-loader-circular-turn 1.4s ease-in-out infinite;
+    }
+
+    @keyframes animation-loader-circular-rotate {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes animation-loader-circular-turn {
+        0% {
+            stroke-dasharray: 1, 200;
+            stroke-dashoffset: 0;
+        }
+
+        50% {
+            stroke-dasharray: 89, 200;
+            stroke-dashoffset: -35;
+        }
+
+        100% {
+            stroke-dasharray: 89, 200;
+            stroke-dashoffset: -124;
+        }
     }
 }
