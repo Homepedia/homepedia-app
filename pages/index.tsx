@@ -1,7 +1,5 @@
 export default function Dashboard() {
     return (
-        <div>
-            Dashboard
-        </div>
+        <div>Déploiement 1</div>
     );
 }
